@@ -22,11 +22,11 @@ requirements:
     # Scientific Python Stack
     - {{ pin_compatible('numpy') }}
     - menpo >=0.9.0,<0.11.0
-    - mayavi >=4.7.0
+    - mayavi
     - moderngl
     # TODO: Unpin PyQT when conda-forge updates pyqt
     # https://github.com/enthought/mayavi/issues/595#issuecomment-386097374
-    - pyqt 5.6.*
+    - pyqt
 
 test:
   requires:
