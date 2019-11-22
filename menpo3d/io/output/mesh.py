@@ -2,6 +2,7 @@ import numpy as np
 
 from menpo.io.output.base import _enforce_only_paths_supported
 from menpo.shape.mesh import TexturedTriMesh
+from menpo.shape.mesh import ColouredTriMesh
 
 
 def obj_exporter(mesh, file_handle, **kwargs):
@@ -18,12 +19,17 @@ def obj_exporter(mesh, file_handle, **kwargs):
         The full path where the obj will be saved out.
     mesh : :map:`TriMesh`
         Any subclass of :map:`TriMesh`. If :map:`TexturedTriMesh` texture
-        coordinates will be saved out. Note that :map:`ColouredTriMesh`
-        will only have shape data saved out, as .OBJ doesn't robustly support
-        per-vertex colour information.
+        coordinates will be saved out. Note that as .OBJ doesn't
+        robustly support per-vertex colour information,
+        :map:`ColouredTriMesh` will have vertex colour data saved out as
+        the same format used by Meshlab.
     """
-    for v in mesh.points:
-        file_handle.write('v {} {} {}\n'.format(*v).encode('utf-8'))
+    if isinstance(mesh, ColouredTriMesh):
+        for v, vc in zip(mesh.points, mesh.colours):
+            file_handle.write('v {} {} {} {} {} {}\n'.format(*v, *vc).encode('utf-8'))
+    else:
+        for v in mesh.points:
+            file_handle.write('v {} {} {}\n'.format(*v).encode('utf-8'))
     file_handle.write(b'\n')
     if isinstance(mesh, TexturedTriMesh):
         for tc in mesh.tcoords.points:
