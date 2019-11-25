@@ -65,7 +65,7 @@ def rasterize_shape_image_from_barycentric_coordinate_images(mesh,
         tri_indices_image.as_vector())
     # Rebuild the image using the usual from_vector machinery
     return tri_indices_image.from_vector(shape_per_pixel.points.T,
-                                         n_channels=mesh.n_channels)
+                                         n_channels=mesh.n_dims)
 
 
 def rasterize_mesh(mesh_in_img, image_shape):
